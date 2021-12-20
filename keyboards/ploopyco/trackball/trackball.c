@@ -179,6 +179,13 @@ bool process_record_kb(uint16_t keycode, keyrecord_t* record) {
         {
             is_drag_scroll ^= 1;
         }
+#ifdef PLOOPY_DRAGSCROLL_LAYER
+        if (is_drag_scroll) {
+            layer_on(PLOOPY_DRAGSCROLL_LAYER);
+        } else {
+            layer_off(PLOOPY_DRAGSCROLL_LAYER);
+        }
+#endif
 #ifdef PLOOPY_DRAGSCROLL_FIXED
         pmw_set_cpi(is_drag_scroll ? PLOOPY_DRAGSCROLL_DPI : dpi_array[keyboard_config.dpi_config]);
 #else
