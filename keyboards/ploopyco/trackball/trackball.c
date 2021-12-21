@@ -117,6 +117,7 @@ void process_wheel(void) {
 
 report_mouse_t pointing_device_task_kb(report_mouse_t mouse_report) {
     process_wheel();
+    mouse_report.y = -mouse_report.y; // This is backwards for some reason
 
     if (is_drag_scroll) {
         mouse_report.h = mouse_report.x;
