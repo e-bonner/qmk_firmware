@@ -31,7 +31,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 // Sensor timeout state
 #define SLEEP_TIME 300000 // ms, if no movement seen will "sleep"
-#define SLEEP_EXIT_EVENTS 10 // pixels accumulated to trigger sleep exit, max 127
+#define SLEEP_EXIT_EVENTS 20 // pixels accumulated to trigger sleep exit, max 127
 uint32_t last_move_time;
 int8_t x_accum = 0;  // Keep accumulated movement while sleeping
 int8_t y_accum = 0;
@@ -60,4 +60,10 @@ report_mouse_t pointing_device_task_user(report_mouse_t mouse_report) {
     
     return mouse_report;
 }
-    
+
+// Bool return specifies whether kb-level handler should run
+bool encoder_update_user(uint8_t index, bool clockwise) {
+    // Suppress scroll wheel events (the scroll wheel sensor can be
+    // noisy if it is on a transition point or not calibrated yet
+    return timer_elapsed32(last_move_time) <= SLEEP_TIME;
+}
